@@ -4,9 +4,19 @@ A custom link-in-bio page for **@BallouttTradesLLC** — a nicer, faster,
 fully-owned alternative to Linktree.
 
 - Single static `index.html` — no build step, no dependencies, no tracking.
-- Dark "trading floor" aesthetic: live ticker tape, animated candlestick grid,
-  money-green + gold palette, glowing avatar, hover sparklines.
+- On-brand aesthetic pulled from his own art: his purple-flame background photo,
+  violet + ember palette, live ticker tape, glowing avatar, hover sparklines.
+- Built-in **QR code** (`assets/qr.png`) linking back to this page — scan, save, share.
 - Hosted free on **GitHub Pages**.
+
+## Regenerate the QR code
+
+If the live URL ever changes (e.g. a custom domain), regenerate `assets/qr.png`:
+
+```bash
+pip install qrcode pillow
+python -c "import qrcode; qrcode.make('https://YOUR-URL/').save('assets/qr.png')"
+```
 
 ## Edit your links
 
