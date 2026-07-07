@@ -180,6 +180,11 @@
   .soc svg{width:21px;height:21px}
   .soc:hover{transform:translateY(-4px);color:var(--violet-bright);border-color:rgba(168,85,247,.6);background:rgba(168,85,247,.1)}
 
+  .guide-legend{margin:14px 2px 0;padding:14px 16px;border-radius:14px;background:var(--card);
+    border:1px solid var(--card-line);font-size:13px;color:var(--ink-dim);line-height:1.8}
+  .guide-legend div{display:flex;gap:8px;align-items:flex-start}
+  .guide-legend b{color:var(--ink);font-weight:600}
+
   .disc{margin-top:36px;padding:16px 18px;border-radius:14px;border:1px solid var(--card-line);
     background:rgba(255,59,78,.05);font-size:12px;line-height:1.55;color:var(--ink-faint);text-align:center;
     opacity:0;animation:rise .7s .94s ease forwards}
@@ -248,6 +253,26 @@
       <svg class="spark" viewBox="0 0 90 34" preserveAspectRatio="none"><path d="M0 18 L14 20 L26 12 L38 16 L52 6 L64 14 L78 9 L90 4"/></svg>
       <span class="link__cta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
+  </div>
+
+  <div class="rule"><span>Alerts Guide</span></div>
+  <div class="links">
+    <a class="link feat" href="assets/balloutt-callouts-guide.pdf" target="_blank" rel="noopener">
+      <span class="link__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </span>
+      <div class="link__body">
+        <div class="link__title">How to Follow My Alerts</div>
+        <div class="link__sub">Emoji legend, terms &amp; an example callout</div>
+      </div>
+      <svg class="spark" viewBox="0 0 90 34" preserveAspectRatio="none"><path d="M0 22 L14 18 L26 24 L38 10 L52 16 L64 6 L78 12 L90 4"/></svg>
+      <span class="link__cta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+  </div>
+  <div class="guide-legend">
+    <div>🟡 <span><b>Entry</b> — trade is live, this is the entry.</span></div>
+    <div>🟢 <span><b>TP hit</b> — one of the take-profit levels has been reached.</span></div>
+    <div>🔴 <span><b>SL hit</b> — stop-loss has been hit, trade closed.</span></div>
   </div>
 
   <div class="rule"><span>Community · Discord</span></div>
