@@ -269,12 +269,18 @@
   .price-cta:hover{filter:brightness(1.1)}
 
   .pricing-toggle{margin:38px 0 18px}
-  .pricing-summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px}
+  .pricing-summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+    gap:14px;padding:16px 19px;border-radius:var(--radius);background:var(--card);
+    border:1px solid var(--card-line);backdrop-filter:blur(8px);
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,background .25s}
+  .pricing-summary:hover{transform:translateY(-2px);border-color:rgba(168,85,247,.6);background:rgba(168,85,247,.1)}
   .pricing-summary::-webkit-details-marker{display:none}
-  .pricing-summary-line{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--card-line),transparent)}
-  .pricing-summary-text{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.26em;
-    text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
-  .pricing-toggle[open] .pricing-summary-text{color:var(--violet-bright)}
+  .pricing-summary-left{display:flex;align-items:center;gap:12px}
+  .pricing-summary-icon{width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--violet),var(--plasma));color:#fff;font-size:17px}
+  .pricing-summary-text{font-family:"Hanken Grotesk",sans-serif;font-size:16px;font-weight:700;color:var(--ink)}
+  .pricing-summary-sub{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:2px}
+  .pricing-toggle[open] .pricing-summary{border-color:rgba(168,85,247,.6)}
   .pricing-toggle[open] .faq-chevron{transform:rotate(45deg);background:var(--violet);color:#160030;border-color:var(--violet)}
   .pricing-toggle .pricing{margin-top:18px}
 
@@ -547,7 +553,7 @@
   <div class="rule"><span>Community · Discord</span></div>
   <div class="links">
 
-    <a class="link" href="https://discord.gg/RX7sUz36v" target="_blank" rel="noopener">
+    <a class="link" href="https://discord.gg/QzTg8Y4bNW" target="_blank" rel="noopener">
       <span class="link__icon">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19 19 0 0 0 15.6 3l-.2.5a13 13 0 0 1 3.7 1.9 15.6 15.6 0 0 0-14.2 0A13 13 0 0 1 8.6 3.5L8.4 3a19 19 0 0 0-4.7 1.4C1.3 8 .6 11.5.9 15a19 19 0 0 0 5.7 2.9l.6-1a12 12 0 0 1-1.9-.9l.5-.4a13.6 13.6 0 0 0 11.6 0l.4.4a12 12 0 0 1-1.9.9l.6 1a19 19 0 0 0 5.7-2.9c.4-4.2-.6-7.6-2.5-10.6ZM8.4 13c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Zm7.2 0c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Z"/></svg>
       </span>
@@ -583,8 +589,13 @@
 
   <details class="pricing-toggle" id="pricingToggle">
     <summary class="pricing-summary">
-      <span class="pricing-summary-line"></span>
-      <span class="pricing-summary-text">Pricing</span>
+      <span class="pricing-summary-left">
+        <span class="pricing-summary-icon">💳</span>
+        <span>
+          <div class="pricing-summary-text">View Pricing</div>
+          <div class="pricing-summary-sub">Mentorship &amp; Alerts — tap to expand</div>
+        </span>
+      </span>
       <span class="faq-chevron">+</span>
     </summary>
 
