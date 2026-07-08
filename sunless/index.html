@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunless — Enter the Portal</title>
+<meta name="description" content="Sunless — live VC trading, 0DTE and setup-based calls. Top 1% results, free community, and live alerts.">
+
+<meta property="og:title" content="Sunless">
+<meta property="og:description" content="Live VC trading — 0DTE and whatever fits the setup. Top 1% results, hitting triple digits daily.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://cdn.discordapp.com/banners/1428780012605145160/a_dac3a18d8fb10845469b98e1dadeb01c.webp?size=1280&amp;animated=true">
+<meta name="theme-color" content="#0d0131">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d0131'/%3E%3Cg stroke='%23a855f7' stroke-width='8' stroke-linecap='round'%3E%3Cline x1='30' y1='68' x2='30' y2='32'/%3E%3Cline x1='50' y1='78' x2='50' y2='46'/%3E%3Cline x1='70' y1='58' x2='70' y2='22'/%3E%3C/g%3E%3Ccircle cx='38' cy='44' r='5' fill='%23ff3b4e'/%3E%3Ccircle cx='62' cy='44' r='5' fill='%23ff3b4e'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#050110;
+    --indigo:#0d0131;
+    --ink:#f2ecff;
+    --ink-dim:#b6a7d6;
+    --ink-faint:#6f5f93;
+    --violet:#a855f7;
+    --violet-bright:#c99bff;
+    --plasma:#7c3aed;
+    --ember:#ff3b4e;
+    --up:#3ce88a;
+    --card:rgba(168,85,247,.06);
+    --card-line:rgba(168,85,247,.18);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Hanken Grotesk",sans-serif;
+    background:var(--bg);color:var(--ink);
+    min-height:100vh;overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;line-height:1.5;position:relative;
+  }
+
+  /* ---------- His background photo ---------- */
+  .bgphoto{position:fixed;inset:-6%;z-index:0;
+    background:url("https://cdn.discordapp.com/banners/1428780012605145160/a_dac3a18d8fb10845469b98e1dadeb01c.webp?size=1280&animated=true") center 30% / cover no-repeat;
+    filter:blur(4px) brightness(.52) saturate(1.15);
+    transform:scale(1.08)}
+  .scrim{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(70% 45% at 50% 0%,rgba(124,58,237,.28),transparent 70%),
+      linear-gradient(180deg,rgba(13,1,49,.55) 0%,rgba(8,2,26,.86) 42%,rgba(5,1,16,.96) 100%)}
+  .glow{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .glow::before,.glow::after{content:"";position:absolute;border-radius:50%;filter:blur(90px)}
+  .glow::before{width:58vw;height:58vw;top:-22vw;left:-12vw;
+    background:radial-gradient(circle,rgba(168,85,247,.30),transparent 68%)}
+  .glow::after{width:50vw;height:50vw;bottom:-20vw;right:-14vw;
+    background:radial-gradient(circle,rgba(255,59,78,.16),transparent 68%)}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.32;mix-blend-mode:overlay}
+
+  /* ---------- Ticker tape ---------- */
+  .tape{position:relative;z-index:3;border-bottom:1px solid var(--card-line);
+    background:linear-gradient(180deg,rgba(124,58,237,.14),transparent);
+    overflow:hidden;white-space:nowrap;backdrop-filter:blur(6px);
+    font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.02em}
+  .tape__track{display:inline-flex;gap:34px;padding:9px 0;animation:scroll 46s linear infinite;will-change:transform}
+  .tape:hover .tape__track{animation-play-state:paused}
+  .tape__item{color:var(--ink-dim)} .tape__sym{color:var(--ink);font-weight:700}
+  .up{color:var(--up)} .down{color:var(--ember)}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  .wrap{position:relative;z-index:3;max-width:560px;margin:0 auto;padding:clamp(30px,7vw,58px) 22px 84px}
+
+  /* ---------- Identity ---------- */
+  .id{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .avatar{position:relative;width:134px;height:134px;margin-bottom:24px;
+    opacity:0;transform:scale(.9);animation:pop .8s .05s cubic-bezier(.2,.9,.25,1) forwards}
+  .avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;position:relative;z-index:2;
+    border:2px solid rgba(168,85,247,.4);
+    box-shadow:0 0 0 6px rgba(6,2,20,.92),0 18px 44px -12px rgba(168,85,247,.6)}
+  .avatar__ring{position:absolute;inset:-9px;border-radius:50%;z-index:1;
+    background:conic-gradient(from 0deg,var(--violet),var(--ember),var(--plasma),var(--violet));
+    animation:spin 8s linear infinite;filter:blur(.4px);opacity:.9}
+  .avatar__badge{position:absolute;bottom:6px;right:6px;z-index:3;width:34px;height:34px;border-radius:50%;
+    background:var(--violet);color:#160030;display:grid;place-items:center;font-size:16px;
+    border:3px solid var(--bg);box-shadow:0 4px 14px rgba(168,85,247,.6)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pop{to{opacity:1;transform:scale(1)}}
+
+  .name{font-family:"Fraunces",serif;font-optical-sizing:auto;font-weight:600;
+    font-size:clamp(34px,8.5vw,52px);line-height:1.02;letter-spacing:-.015em;margin-bottom:4px;
+    opacity:0;animation:rise .7s .18s ease forwards}
+  .name em{font-style:italic;color:var(--violet-bright);font-weight:500}
+  .llc{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--ember);display:inline-block;margin-bottom:16px;opacity:0;animation:rise .7s .26s ease forwards}
+  .handle{display:inline-flex;align-items:center;gap:7px;font-family:"JetBrains Mono",monospace;
+    font-size:13px;color:var(--ink-dim);padding:5px 13px;border:1px solid var(--card-line);border-radius:999px;
+    background:var(--card);margin-bottom:20px;opacity:0;animation:rise .7s .32s ease forwards}
+  .handle .dot{width:6px;height:6px;border-radius:50%;background:var(--ember);
+    box-shadow:0 0 8px var(--ember);animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .bio{max-width:404px;color:var(--ink-dim);font-size:15.5px;line-height:1.6;opacity:0;animation:rise .7s .38s ease forwards}
+  .bio strong{color:var(--violet-bright);font-weight:700}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .stats{display:flex;justify-content:center;gap:10px;margin-top:22px;flex-wrap:wrap;
+    opacity:0;animation:rise .7s .46s ease forwards}
+  .stats__item{display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;
+    background:var(--card);border:1px solid var(--card-line);backdrop-filter:blur(8px);
+    text-decoration:none;transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,background .25s}
+  .stats__item:hover{transform:translateY(-2px);border-color:rgba(168,85,247,.6);background:rgba(168,85,247,.1)}
+  .stats__item--static{cursor:default}
+  .stats__item svg{width:15px;height:15px;color:var(--violet-bright);flex:none}
+  .stats__num{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13px;color:var(--ink)}
+  .stats__label{font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em}
+
+  .rule{display:flex;align-items:center;gap:14px;margin:38px 0 18px;opacity:0;animation:rise .7s .44s ease forwards}
+  .rule span{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
+  .rule::before,.rule::after{content:"";height:1px;flex:1;
+    background:linear-gradient(90deg,transparent,var(--card-line),transparent)}
+
+  /* ---------- Link cards ---------- */
+  .links{display:flex;flex-direction:column;gap:13px}
+  .link{position:relative;display:flex;align-items:center;gap:16px;padding:17px 18px;border-radius:var(--radius);
+    background:var(--card);border:1px solid var(--card-line);color:var(--ink);text-decoration:none;overflow:hidden;
+    backdrop-filter:blur(8px);
+    transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s,box-shadow .3s;
+    opacity:0;animation:rise .6s ease forwards;transform:translateY(14px)}
+  .link:nth-child(1){animation-delay:.50s}
+  .link:nth-child(2){animation-delay:.56s}
+  .link:nth-child(3){animation-delay:.62s}
+  .link:nth-child(4){animation-delay:.68s}
+  .link:nth-child(5){animation-delay:.74s}
+  .link::after{content:"";position:absolute;inset:0;border-radius:inherit;
+    background:radial-gradient(120% 100% at 0% 50%,rgba(168,85,247,.16),transparent 55%);opacity:0;transition:opacity .3s}
+  .link:hover{transform:translateY(-3px);border-color:rgba(168,85,247,.6);
+    background:rgba(168,85,247,.09);box-shadow:0 16px 42px -20px rgba(168,85,247,.8)}
+  .link:hover::after{opacity:1}
+  .link:active{transform:translateY(-1px)}
+  .link__icon{flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;position:relative;z-index:2;
+    background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.28);color:var(--violet-bright);transition:transform .3s}
+  .link:hover .link__icon{transform:scale(1.06) rotate(-3deg)}
+  .link__icon svg{width:22px;height:22px}
+  .link__body{flex:1;min-width:0;position:relative;z-index:2}
+  .link__title{font-weight:600;font-size:16px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+  .link__sub{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:3px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .link__cta{flex:none;position:relative;z-index:2;color:var(--ink-faint);transition:transform .3s,color .3s}
+  .link:hover .link__cta{transform:translateX(4px);color:var(--violet-bright)}
+  .spark{position:absolute;right:52px;top:50%;transform:translateY(-50%);width:90px;height:34px;z-index:1;opacity:0;transition:opacity .35s}
+  .link:hover .spark{opacity:.9}
+  .spark path{stroke:var(--violet-bright);stroke-width:1.6;fill:none;stroke-dasharray:200;stroke-dashoffset:200;
+    filter:drop-shadow(0 0 4px rgba(168,85,247,.7))}
+  .link:hover .spark path{animation:draw 1s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  .link.feat{background:linear-gradient(115deg,rgba(168,85,247,.16),rgba(255,59,78,.08));
+    border-color:rgba(168,85,247,.4);padding:20px 18px}
+  .link.feat .link__icon{background:linear-gradient(135deg,var(--violet),var(--plasma));color:#fff;border-color:transparent;
+    box-shadow:0 8px 22px -8px rgba(168,85,247,.8)}
+  .link.feat .link__title{font-size:17px}
+  .tag{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    padding:3px 7px;border-radius:6px;background:var(--ember);color:#fff;line-height:1}
+  .tag.disc{background:rgba(88,101,242,.22);color:#b9c0ff;border:1px solid rgba(88,101,242,.5)}
+  .tag.free{background:rgba(60,232,138,.16);color:var(--up);border:1px solid rgba(60,232,138,.45)}
+
+  /* ---------- QR card ---------- */
+  .qr{margin-top:22px;display:flex;align-items:center;gap:20px;padding:20px;border-radius:var(--radius);
+    background:linear-gradient(115deg,rgba(168,85,247,.1),rgba(255,59,78,.05));
+    border:1px solid var(--card-line);backdrop-filter:blur(8px);
+    opacity:0;animation:rise .7s .80s ease forwards}
+  .qr__tile{flex:none;width:120px;height:120px;border-radius:14px;background:#fff;padding:9px;
+    box-shadow:0 12px 30px -10px rgba(168,85,247,.6)}
+  .qr__tile img{width:100%;height:100%;display:block}
+  .qr__txt{min-width:0}
+  .qr__txt h3{font-family:"Fraunces",serif;font-weight:600;font-size:20px;letter-spacing:-.01em;margin-bottom:4px}
+  .qr__txt p{color:var(--ink-dim);font-size:13.5px;line-height:1.5;margin-bottom:10px}
+  .qr__dl{display:inline-flex;align-items:center;gap:6px;font-family:"JetBrains Mono",monospace;font-size:11px;
+    letter-spacing:.04em;text-transform:uppercase;color:var(--violet-bright);text-decoration:none;
+    padding:6px 11px;border:1px solid var(--card-line);border-radius:999px;transition:.25s}
+  .qr__dl:hover{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.5)}
+  .qr__dl svg{width:14px;height:14px}
+
+  /* ---------- Socials + footer ---------- */
+  .socials{display:flex;justify-content:center;gap:12px;margin-top:32px;opacity:0;animation:rise .7s .88s ease forwards}
+  .soc{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--card);
+    border:1px solid var(--card-line);color:var(--ink-dim);text-decoration:none;backdrop-filter:blur(8px);
+    transition:transform .3s cubic-bezier(.2,.8,.2,1),color .3s,border-color .3s,background .3s}
+  .soc svg{width:21px;height:21px}
+  .soc:hover{transform:translateY(-4px);color:var(--violet-bright);border-color:rgba(168,85,247,.6);background:rgba(168,85,247,.1)}
+
+  .guide-legend{margin:14px 2px 0;padding:14px 16px;border-radius:14px;background:var(--card);
+    border:1px solid var(--card-line);font-size:13px;color:var(--ink-dim);line-height:1.8}
+  .guide-legend div{display:flex;gap:8px;align-items:flex-start}
+  .guide-legend b{color:var(--ink);font-weight:600}
+
+  .disc{margin-top:36px;padding:16px 18px;border-radius:14px;border:1px solid var(--card-line);
+    background:rgba(255,59,78,.05);font-size:12px;line-height:1.55;color:var(--ink-faint);text-align:center;
+    opacity:0;animation:rise .7s .94s ease forwards}
+  .disc b{color:var(--ink-dim);font-weight:600}
+  .foot{margin-top:24px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);
+    letter-spacing:.04em;opacity:0;animation:rise .7s 1s ease forwards}
+  .foot .beat{color:var(--ember)}
+
+  @media (max-width:420px){
+    .qr{flex-direction:column;text-align:center}
+    .qr__tile{width:150px;height:150px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .link,.name,.llc,.handle,.bio,.rule,.socials,.disc,.foot,.avatar,.qr{opacity:1!important;transform:none!important}
+  }
+
+  /* ---------- How It Works ---------- */
+  .steps{display:flex;flex-direction:column;gap:10px;opacity:0;animation:rise .7s .46s ease forwards}
+  .step{display:flex;align-items:center;gap:15px;padding:14px 17px;border-radius:var(--radius);
+    background:var(--card);border:1px solid var(--card-line);text-decoration:none;color:var(--ink);
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,background .25s}
+  .step:hover{transform:translateY(-2px);border-color:rgba(168,85,247,.6);background:rgba(168,85,247,.09)}
+  .step__num{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;
+    color:var(--violet-bright);flex:none;width:24px}
+  .step__body{display:flex;flex-direction:column;min-width:0}
+  .step__title{font-weight:600;font-size:14.5px}
+  .step__sub{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:2px}
+
+  /* ---------- Recent Highlights ---------- */
+  .highlights{display:flex;gap:12px;overflow-x:auto;padding:2px 2px 6px;margin:0 -2px;
+    scrollbar-width:none;opacity:0;animation:rise .7s .48s ease forwards}
+  .highlights::-webkit-scrollbar{display:none}
+  .hl-card{flex:none;min-width:184px;padding:16px 18px;border-radius:var(--radius);
+    background:linear-gradient(150deg,rgba(60,232,138,.10),var(--card));
+    border:1px solid rgba(60,232,138,.28);backdrop-filter:blur(8px)}
+  .hl-pct{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:22px;color:var(--up);
+    text-shadow:0 0 18px rgba(60,232,138,.4)}
+  .hl-label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px}
+  .hl-period{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-dim);margin-top:8px;line-height:1.5}
+  .hl-card.hl-wide{min-width:212px}
+  .hl-list{margin-top:9px;display:flex;flex-direction:column;gap:3px;
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-dim)}
+  .hl-disclaimer{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-faint);
+    font-style:italic;margin-top:8px;padding:0 2px}
+  .hl-disclaimer-link{color:var(--ink-dim);text-decoration:underline;text-underline-offset:2px}
+
+  /* ---------- Pricing ---------- */
+  .pricing{display:flex;flex-direction:column;gap:14px;opacity:0;animation:rise .7s .54s ease forwards}
+  .price-card{border-radius:var(--radius);border:1px solid var(--card-line);background:var(--card);
+    padding:22px 20px;backdrop-filter:blur(8px);position:relative;overflow:hidden}
+  .price-card.feat{border-color:rgba(168,85,247,.4);
+    background:linear-gradient(115deg,rgba(168,85,247,.14),rgba(255,59,78,.06))}
+  .price-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
+  .price-name{font-family:"Fraunces",serif;font-weight:600;font-size:19px;letter-spacing:-.01em}
+  .price-amt{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:22px;color:var(--violet-bright)}
+  .price-amt small{font-size:12px;color:var(--ink-faint);font-weight:500}
+  .price-desc{color:var(--ink-dim);font-size:13.5px;line-height:1.6;margin:10px 0 14px}
+  .price-list{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+  .price-list li{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--ink-dim);line-height:1.4}
+  .price-list li::before{content:"✓";color:var(--up);font-weight:700;flex-shrink:0}
+  .price-plans{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px;
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-dim);padding:12px 14px;
+    border-radius:12px;background:rgba(0,0,0,.18);border:1px solid var(--card-line)}
+  .price-plans li{display:flex;justify-content:space-between;gap:10px}
+  .price-plans .note{margin-top:2px;color:var(--ink-faint);font-size:11px;font-style:italic}
+  .price-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    padding:13px 18px;border-radius:999px;background:linear-gradient(135deg,var(--violet),var(--plasma));
+    color:#fff;text-decoration:none;font-weight:700;font-size:14px;transition:filter .2s ease}
+  .price-cta:hover{filter:brightness(1.1)}
+
+  .pricing-toggle{margin:38px 0 18px}
+  .pricing-summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+    gap:14px;padding:16px 19px;border-radius:var(--radius);background:var(--card);
+    border:1px solid var(--card-line);backdrop-filter:blur(8px);
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,background .25s}
+  .pricing-summary:hover{transform:translateY(-2px);border-color:rgba(168,85,247,.6);background:rgba(168,85,247,.1)}
+  .pricing-summary::-webkit-details-marker{display:none}
+  .pricing-summary-left{display:flex;align-items:center;gap:12px}
+  .pricing-summary-icon{width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--violet),var(--plasma));color:#fff;font-size:17px}
+  .pricing-summary-text{font-family:"Hanken Grotesk",sans-serif;font-size:16px;font-weight:700;color:var(--ink)}
+  .pricing-summary-sub{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:2px}
+  .pricing-toggle[open] .pricing-summary{border-color:rgba(168,85,247,.6)}
+  .pricing-toggle[open] .faq-chevron{transform:rotate(45deg);background:var(--violet);color:#160030;border-color:var(--violet)}
+  .pricing-toggle .pricing{margin-top:18px}
+
+  /* ---------- Sticky Join Free bar ---------- */
+  .join-bar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:center;
+    gap:8px;padding:11px 16px;text-align:center;text-decoration:none;
+    font-family:"JetBrains Mono",monospace;font-size:12.5px;font-weight:700;letter-spacing:.02em;
+    color:#fff;background:linear-gradient(90deg,var(--plasma),var(--violet),var(--plasma));
+    background-size:200% 100%;animation:barflow 6s linear infinite;
+    border-bottom:1px solid rgba(255,255,255,.12);transition:filter .2s ease}
+  @keyframes barflow{to{background-position:200% 0}}
+  .join-bar:hover{filter:brightness(1.08)}
+  .join-bar .arrow{transition:transform .25s ease}
+  .join-bar:hover .arrow{transform:translateX(3px)}
+
+  /* ---------- FAQ ---------- */
+  .faq{display:flex;flex-direction:column;gap:11px}
+  .faq-item{background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    overflow:hidden;backdrop-filter:blur(8px);transition:border-color .25s ease}
+  .faq-item[open]{border-color:rgba(168,85,247,.6)}
+  .faq-item summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;
+    justify-content:space-between;gap:14px;font-weight:600;font-size:15px}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-tag{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ember);flex-shrink:0;width:26px}
+  .faq-q{flex:1}
+  .faq-chevron{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1px solid rgba(168,85,247,.4);
+    display:flex;align-items:center;justify-content:center;color:var(--violet-bright);font-size:14px;
+    transition:transform .25s ease,background .25s ease}
+  .faq-item[open] .faq-chevron{transform:rotate(45deg);background:var(--violet);color:#160030;border-color:var(--violet)}
+  .faq-a{padding:0 18px 18px 60px;color:var(--ink-dim);font-size:14px;line-height:1.6;margin:0}
+  .faq-more{display:flex;flex-direction:column;gap:11px;max-height:0;opacity:0;overflow:hidden;
+    transition:max-height .5s ease,opacity .4s ease,margin-top .4s ease}
+  .faq:has(> details.faq-item.main[open]) .faq-more{max-height:900px;opacity:1;margin-top:2px}
+  .faq-more-label{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-faint);margin:2px 2px 2px}
+
+  /* ---------- Ask Us button + modal ---------- */
+  .ask-us-wrap{position:fixed;right:18px;bottom:20px;z-index:50;display:flex;flex-direction:column;
+    align-items:flex-end;gap:8px}
+  .ask-us-badge{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.04em;
+    color:var(--ink-dim);background:rgba(5,1,16,.85);border:1px solid var(--card-line);
+    padding:5px 11px;border-radius:999px;backdrop-filter:blur(6px);white-space:nowrap}
+  .ask-us-btn{display:flex;align-items:center;gap:9px;
+    padding:13px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.15);
+    background:linear-gradient(135deg,var(--violet) 0%,var(--plasma) 100%);color:#fff;
+    font-family:"JetBrains Mono",monospace;font-weight:700;font-size:12.5px;letter-spacing:.05em;
+    text-transform:uppercase;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4);
+    animation:pulse-glow 2.6s ease-in-out infinite}
+  .ask-us-btn:hover{filter:brightness(1.12)}
+  @keyframes pulse-glow{
+    0%{box-shadow:0 0 0 0 rgba(168,85,247,.55),0 8px 24px rgba(0,0,0,.4)}
+    70%{box-shadow:0 0 0 14px rgba(168,85,247,0),0 8px 24px rgba(0,0,0,.4)}
+    100%{box-shadow:0 0 0 0 rgba(168,85,247,0),0 8px 24px rgba(0,0,0,.4)}
+  }
+  .modal-overlay{position:fixed;inset:0;background:rgba(5,1,16,.78);backdrop-filter:blur(3px);
+    z-index:100;display:none;align-items:flex-end;justify-content:center}
+  .modal-overlay.open{display:flex}
+  @media (min-width:560px){.modal-overlay{align-items:center}}
+  .modal{width:100%;max-width:400px;background:var(--indigo);border:1px solid var(--card-line);
+    border-radius:20px 20px 0 0;padding:26px 22px 30px;position:relative;
+    box-shadow:0 -10px 40px rgba(168,85,247,.18)}
+  @media (min-width:560px){.modal{border-radius:20px}}
+  .modal-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;
+    border:1px solid rgba(168,85,247,.4);background:transparent;color:var(--ink-faint);cursor:pointer;font-size:16px}
+  .modal h3{font-family:"Fraunces",serif;font-weight:600;font-size:24px;margin-bottom:4px}
+  .modal p.sub{color:var(--ink-dim);font-size:13px;margin-bottom:20px}
+  .contact-option{display:flex;align-items:center;gap:13px;padding:13px 15px;border-radius:12px;
+    border:1px solid var(--card-line);background:rgba(168,85,247,.06);color:var(--ink);
+    text-decoration:none;margin-bottom:9px;font-size:14px;font-weight:500;
+    transition:border-color .2s ease,transform .15s ease}
+  .contact-option:hover{border-color:var(--violet);transform:translateX(2px)}
+  .contact-icon{width:32px;height:32px;border-radius:50%;background:rgba(168,85,247,.14);
+    display:flex;align-items:center;justify-content:center;color:var(--violet-bright);flex-shrink:0}
+  .contact-icon svg{width:16px;height:16px}
+  .contact-meta{display:flex;flex-direction:column}
+  .contact-meta .contact-handle{color:var(--ink-faint);font-size:11px;font-family:"JetBrains Mono",monospace}
+</style>
+</head>
+<body>
+
+<div class="bgphoto"></div>
+<div class="scrim"></div>
+<div class="glow"></div>
+<svg class="grain"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+
+<div class="tape"><div class="tape__track" id="tape"></div></div>
+
+<a class="join-bar" href="https://discord.gg/y8WGBS8tHP" target="_blank" rel="noopener">
+  🔥 Join the Free Server — no cost to start <span class="arrow">→</span>
+</a>
+
+<main class="wrap">
+
+  <header class="id">
+    <div class="avatar">
+      <div class="avatar__ring"></div>
+      <img src="assets/profile.png" alt="Sunless profile picture">
+      <div class="avatar__badge" title="Live VC Trader">✓</div>
+    </div>
+    <h1 class="name">Sun<em>less</em></h1>
+    <span class="llc">— Live VC Trader —</span>
+    <div class="handle"><span class="dot"></span>Discord · Sunless</div>
+    <p class="bio">Trades live, out loud, in the VC — no delay, no script.
+      0DTE, or whatever the setup calls for that day.<br><br>
+      <strong>Top 1%</strong> results. Triple digits, daily.<br>
+      This isn't luck. This is execution.<br><br>
+      Free to follow. Live in voice. Alerts when you need them.</p>
+  </header>
+
+  <div class="rule"><span>How It Works</span></div>
+  <div class="steps">
+    <a class="step" href="https://discord.gg/y8WGBS8tHP" target="_blank" rel="noopener">
+      <span class="step__num">01</span>
+      <span class="step__body">
+        <span class="step__title">Join Free</span>
+        <span class="step__sub">Free Server · no cost to start</span>
+      </span>
+    </a>
+    <a class="step" href="https://discord.com/users/1428780012605145160" target="_blank" rel="noopener">
+      <span class="step__num">02</span>
+      <span class="step__body">
+        <span class="step__title">Try Alerts</span>
+        <span class="step__sub">DM Sunless directly to get access</span>
+      </span>
+    </a>
+    <a class="step" href="https://discord.gg/y8WGBS8tHP" target="_blank" rel="noopener">
+      <span class="step__num">03</span>
+      <span class="step__body">
+        <span class="step__title">Join Live VC</span>
+        <span class="step__sub">Live daily at 9:30 AM EST</span>
+      </span>
+    </a>
+  </div>
+
+  <div class="rule"><span>Recent Highlights</span></div>
+  <!-- Add / edit cards here — each one is a real result -->
+  <div class="highlights">
+    <div class="hl-card">
+      <div class="hl-pct">+6,543%</div>
+      <div class="hl-label">June 2026 Recap</div>
+      <div class="hl-period">33 trades · 27W–6L<br>81.8% win rate</div>
+    </div>
+
+    <div class="hl-card">
+      <div class="hl-pct">+1,886%</div>
+      <div class="hl-label">Biggest Play</div>
+      <div class="hl-period">TSLA 395c 0DTE<br>June 29</div>
+    </div>
+
+    <div class="hl-card hl-wide">
+      <div class="hl-pct">+198.3%</div>
+      <div class="hl-label">Avg Gain / Trade</div>
+      <div class="hl-list">
+        <span>Best day: June 29</span>
+        <span>TSLA $0.89 → $17.68</span>
+      </div>
+    </div>
+  </div>
+  <p class="hl-disclaimer">Hypothetical: $1,000 compounded through every June win would sit at <strong>$741,370,652,299</strong> (+74,137,065,130%) — assumes no technical errors, human errors, bad fills, or early exits. Individual results vary — see <a href="#riskDisclosure" class="hl-disclaimer-link">Risk Disclosure</a> below.</p>
+
+  <div class="rule"><span>What I Trade</span></div>
+  <div class="links">
+
+    <a class="link feat" href="https://discord.com/users/1428780012605145160" target="_blank" rel="noopener">
+      <span class="link__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4c1.5 0 3 1 3 3 0 1-.5 2-1 2.5.5.5 1 1.5 1 2.5a3 3 0 0 1-3 3 4 4 0 0 1-8 0 3 3 0 0 1-3-3c0-1 .5-2 1-2.5-.5-.5-1-1.5-1-2.5 0-2 1.5-3 3-3a4 4 0 0 1 4-4Z"/><path d="M12 6v13M9 10h6M8.5 15h7"/></svg>
+      </span>
+      <div class="link__body">
+        <div class="link__title">Try Alerts <span class="tag">DM to Start</span></div>
+        <div class="link__sub">0DTE, or whatever fits the setup</div>
+      </div>
+      <svg class="spark" viewBox="0 0 90 34" preserveAspectRatio="none"><path d="M0 26 L14 22 L26 27 L38 14 L52 18 L64 8 L78 12 L90 2"/></svg>
+      <span class="link__cta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+
+    <a class="link" href="https://discord.gg/y8WGBS8tHP" target="_blank" rel="noopener">
+      <span class="link__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/><path d="M18 4h2v2"/></svg>
+      </span>
+      <div class="link__body">
+        <div class="link__title">Join Live VC</div>
+        <div class="link__sub">Live daily at 9:30 AM EST</div>
+      </div>
+      <svg class="spark" viewBox="0 0 90 34" preserveAspectRatio="none"><path d="M0 18 L14 20 L26 12 L38 16 L52 6 L64 14 L78 9 L90 4"/></svg>
+      <span class="link__cta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+  </div>
+
+  <div class="rule"><span>Alerts Guide</span></div>
+  <div class="guide-legend">
+    <div>🟡 <span><b>Entry</b> — trade is live, this is the entry.</span></div>
+    <div>🟢 <span><b>TP hit</b> — one of the take-profit levels has been reached.</span></div>
+    <div>🔴 <span><b>SL hit</b> — stop-loss has been hit, trade closed.</span></div>
+  </div>
+
+  <div class="rule"><span>Got Questions?</span></div>
+  <!-- Edit the answers below — keep questions short, one job per answer -->
+  <div class="faq">
+    <details class="faq-item main" id="faqMain">
+      <summary>
+        <span class="faq-tag">01</span>
+        <span class="faq-q">What do you actually trade?</span>
+        <span class="faq-chevron">+</span>
+      </summary>
+      <p class="faq-a">0DTE mostly, but whatever fits the setup that day — called live, in voice, as it happens.</p>
+    </details>
+
+    <div class="faq-more">
+      <p class="faq-more-label">Most Asked</p>
+      <details class="faq-item">
+        <summary>
+          <span class="faq-tag">02</span>
+          <span class="faq-q">Is there a free way to follow?</span>
+          <span class="faq-chevron">+</span>
+        </summary>
+        <p class="faq-a">Yes — join the Free Server down in the Community section, no cost to get in.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span class="faq-tag">03</span>
+          <span class="faq-q">How do I get live alerts?</span>
+          <span class="faq-chevron">+</span>
+        </summary>
+        <p class="faq-a">DM me directly on Discord and I'll get you set up.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span class="faq-tag">04</span>
+          <span class="faq-q">Can I just watch the live VC?</span>
+          <span class="faq-chevron">+</span>
+        </summary>
+        <p class="faq-a">Of course — hop in the free server and pull up to the voice channel anytime I'm live.</p>
+      </details>
+    </div>
+  </div>
+
+  <div class="rule"><span>Community · Discord</span></div>
+  <div class="links">
+
+    <a class="link" href="https://discord.gg/y8WGBS8tHP" target="_blank" rel="noopener">
+      <span class="link__icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19 19 0 0 0 15.6 3l-.2.5a13 13 0 0 1 3.7 1.9 15.6 15.6 0 0 0-14.2 0A13 13 0 0 1 8.6 3.5L8.4 3a19 19 0 0 0-4.7 1.4C1.3 8 .6 11.5.9 15a19 19 0 0 0 5.7 2.9l.6-1a12 12 0 0 1-1.9-.9l.5-.4a13.6 13.6 0 0 0 11.6 0l.4.4a12 12 0 0 1-1.9.9l.6 1a19 19 0 0 0 5.7-2.9c.4-4.2-.6-7.6-2.5-10.6ZM8.4 13c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Zm7.2 0c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Z"/></svg>
+      </span>
+      <div class="link__body">
+        <div class="link__title">Free Server · Mentorship <span class="tag free">Free</span></div>
+        <div class="link__sub">Start here — no cost to join</div>
+      </div>
+      <span class="link__cta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+  </div>
+
+  <!-- QR share card -->
+  <div class="qr">
+    <div class="qr__tile"><img src="assets/qr.png" alt="QR code linking to this page"></div>
+    <div class="qr__txt">
+      <h3>Scan · Save · Share</h3>
+      <p>Point a phone camera at the code to open this page, or grab it to drop on a flyer, stream, or story.</p>
+      <a class="qr__dl" href="assets/qr.png" download="sunless-qr.png">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        Download PNG
+      </a>
+    </div>
+  </div>
+
+  <nav class="socials">
+    <a class="soc" href="https://discord.gg/y8WGBS8tHP" target="_blank" rel="noopener" aria-label="Discord">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19 19 0 0 0 15.6 3l-.2.5a13 13 0 0 1 3.7 1.9 15.6 15.6 0 0 0-14.2 0A13 13 0 0 1 8.6 3.5L8.4 3a19 19 0 0 0-4.7 1.4C1.3 8 .6 11.5.9 15a19 19 0 0 0 5.7 2.9l.6-1a12 12 0 0 1-1.9-.9l.5-.4a13.6 13.6 0 0 0 11.6 0l.4.4a12 12 0 0 1-1.9.9l.6 1a19 19 0 0 0 5.7-2.9c.4-4.2-.6-7.6-2.5-10.6ZM8.4 13c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Zm7.2 0c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Z"/></svg>
+    </a>
+  </nav>
+
+  <div class="disc" id="riskDisclosure">
+    <b>Risk disclosure.</b> Content is for educational purposes only and is not financial advice.
+    Trading involves substantial risk of loss.
+  </div>
+
+  <div class="foot">© <span id="yr">2026</span> Sunless · forged with <span class="beat">▲</span> for the community</div>
+
+</main>
+
+<!-- Ask Us button -->
+<div class="ask-us-wrap">
+  <span class="ask-us-badge">⏱ Usually replies in &lt;1hr</span>
+  <button class="ask-us-btn" onclick="document.getElementById('askUsModal').classList.add('open')">
+    💬 Ask Us
+  </button>
+</div>
+
+<div class="modal-overlay" id="askUsModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('askUsModal').classList.remove('open')">✕</button>
+    <h3>Ask Me Anything</h3>
+    <p class="sub">Pick where you want to reach me — I'll get back to you.</p>
+
+    <a class="contact-option" href="https://discord.com/users/1428780012605145160" target="_blank" rel="noopener">
+      <span class="contact-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19 19 0 0 0 15.6 3l-.2.5a13 13 0 0 1 3.7 1.9 15.6 15.6 0 0 0-14.2 0A13 13 0 0 1 8.6 3.5L8.4 3a19 19 0 0 0-4.7 1.4C1.3 8 .6 11.5.9 15a19 19 0 0 0 5.7 2.9l.6-1a12 12 0 0 1-1.9-.9l.5-.4a13.6 13.6 0 0 0 11.6 0l.4.4a12 12 0 0 1-1.9.9l.6 1a19 19 0 0 0 5.7-2.9c.4-4.2-.6-7.6-2.5-10.6ZM8.4 13c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Zm7.2 0c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Z"/></svg></span>
+      <span class="contact-meta">Discord DM <span class="contact-handle">Sunless</span></span>
+    </a>
+
+    <a class="contact-option" href="https://discord.gg/y8WGBS8tHP" target="_blank" rel="noopener">
+      <span class="contact-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19 19 0 0 0 15.6 3l-.2.5a13 13 0 0 1 3.7 1.9 15.6 15.6 0 0 0-14.2 0A13 13 0 0 1 8.6 3.5L8.4 3a19 19 0 0 0-4.7 1.4C1.3 8 .6 11.5.9 15a19 19 0 0 0 5.7 2.9l.6-1a12 12 0 0 1-1.9-.9l.5-.4a13.6 13.6 0 0 0 11.6 0l.4.4a12 12 0 0 1-1.9.9l.6 1a19 19 0 0 0 5.7-2.9c.4-4.2-.6-7.6-2.5-10.6ZM8.4 13c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Zm7.2 0c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Z"/></svg></span>
+      <span class="contact-meta">Free Server <span class="contact-handle">Join the community</span></span>
+    </a>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const syms=[["SPY",1],["QQQ",1],["NVDA",1],["TSLA",-1],["AAPL",1],["AMD",-1],["MSFT",1],["META",1],["GOOGL",-1],["BTC",1],["ETH",1],["AMZN",1],["NFLX",-1],["COIN",1],["PLTR",1],["SMCI",-1]];
+    const track=document.getElementById('tape');
+    function row(){return syms.map(([s,dir])=>{const pct=(Math.random()*3.4+.05).toFixed(2);const px=(Math.random()*480+18).toFixed(2);const cls=dir>0?'up':'down';const arr=dir>0?'▲':'▼';const sign=dir>0?'+':'−';return `<span class="tape__item"><span class="tape__sym">${s}</span> ${px} <span class="${cls}">${arr} ${sign}${pct}%</span></span>`;}).join('');}
+    track.innerHTML=row()+row();
+  })();
+  document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
